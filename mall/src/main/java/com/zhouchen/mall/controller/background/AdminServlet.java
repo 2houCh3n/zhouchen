@@ -88,10 +88,6 @@ public class AdminServlet extends HttpServlet {
             res.setCode(10000);
             res.setMessage("旧密码错误！");
         }
-        if (result == 2) {
-            res.setCode(10000);
-            res.setMessage("请保持确认新密码一致！");
-        }
         response.getWriter().println(gson.toJson(res));
     }
 
@@ -192,9 +188,10 @@ public class AdminServlet extends HttpServlet {
         Result res = new Result();
         if (result == 0) {
             res.setCode(0);
-            Map<String, String> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             map.put("token", admin.getNickname());
             map.put("name", admin.getNickname());
+            map.put("level", admin.getLevel());
             res.setData(map);
             // 设置session
             HttpSession session = request.getSession();

@@ -42,6 +42,8 @@ public class Order {
     private Integer deleteFlag;
     //订单更新时间
     private String updateTime;
+    //订单创建时间
+    private String createTime;
     //该订单对应的商品的所有规格
     private List<Spec> specs;
     //订单所有状态
@@ -235,6 +237,14 @@ public class Order {
         this.hasComment = hasComment;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -251,7 +261,8 @@ public class Order {
                 ", address='" + address + '\'' +
                 ", user=" + user +
                 ", deleteFlag=" + deleteFlag +
-                ", udpateTime='" + updateTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
+                ", createTime='" + createTime + '\'' +
                 ", specs=" + specs +
                 ", states=" + states +
                 ", curState=" + curState +

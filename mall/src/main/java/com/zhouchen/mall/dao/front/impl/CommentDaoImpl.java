@@ -56,4 +56,21 @@ public class CommentDaoImpl implements CommentDao {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 根据用户的id从comments表中删除所有的评论
+     * @param userId
+     */
+    @Override
+    public void deleteComments(int userId) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update(
+                    "delete from comments where userId=?",
+                    userId
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -32,4 +32,8 @@ public interface OrderDao {
     void changeState(Order order, int stateId);
 
     void setHasComment(int orderId);
+
+    void deleteOrders(int userId);
+
+    List<Order> getOrdersByUser(int userId);
 }

@@ -15,6 +15,8 @@ public class Admin {
     //管理员密码
     private String pwd;
 
+    private Integer level;
+
     public Integer getId() {
         return id;
     }
@@ -47,6 +49,14 @@ public class Admin {
         this.pwd = pwd;
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     @Override
     public String toString() {
         return "Admin{" +
@@ -54,6 +64,7 @@ public class Admin {
                 ", email='" + email + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", pwd='" + pwd + '\'' +
+                ", level=" + level +
                 '}';
     }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 public interface OrderService {
     Map<String, Object> ordersByPage(QueryCondition condition);
 
-    void deleteOrder(int orderId);
+    int deleteOrder(int orderId);
 
     Order getOrderInfo(int orderId);
 

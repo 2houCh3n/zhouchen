@@ -33,7 +33,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> ordersByPage(QueryCondition condition) {
         Map<String, Object> map = sqlJoin(condition);
         List<Object> params = (List<Object>) map.get("params");
-        String sql = "select * from orders where 1 = 1 " + (String)(map.get("sql")) + " order by updateTime asc " + " limit ? offset ?";
+        String sql = "select * from orders where 1 = 1 " + (String)(map.get("sql")) + " order by updateTime desc " + " limit ? offset ?";
         params.add(condition.getPageSize());
         params.add((condition.getCurrentPage() - 1) * condition.getPageSize());
         QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
@@ -79,7 +79,7 @@ public class OrderDaoImpl implements OrderDao {
         QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
         try {
             runner.update(
-                    "update from orders where id=?",
+                    "delete from orders where id=?",
                     orderId
             );
         } catch (SQLException e) {
@@ -291,6 +291,44 @@ public class OrderDaoImpl implements OrderDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 从orders表中删除指定用户的所有订单
+     * @param userId
+     */
+    @Override
+    public void deleteOrders(int userId) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update(
+                    "delete from orders where userId=?",
+                    userId
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 根据用户id从orders表中获取所有的订单
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Order> getOrdersByUser(int userId) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        List<Order> orders = null;
+        try {
+            orders = runner.query(
+                    "select * from orders where userId=?",
+                    new BeanListHandler<>(Order.class),
+                    userId
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
     }
 
 

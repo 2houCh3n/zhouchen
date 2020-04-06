@@ -1,5 +1,6 @@
 package com.zhouchen.mall.dao.background;
 
+import com.zhouchen.mall.bean.order.Order;
 import com.zhouchen.mall.bean.user.User;
 import com.zhouchen.mall.bean.user.UserPwd;
 

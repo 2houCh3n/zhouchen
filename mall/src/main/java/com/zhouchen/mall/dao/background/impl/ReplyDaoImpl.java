@@ -27,7 +27,7 @@ public class ReplyDaoImpl implements ReplyDao {
         List<Question> questions = null;
         try {
             questions = runner.query(
-                    "select * from questions where state=? order by createTime desc",
+                    "select * from questions where state=? order by createTime asc",
                     new BeanListHandler<>(Question.class),
                     state
             );
@@ -113,6 +113,23 @@ public class ReplyDaoImpl implements ReplyDao {
                     question.getGoodId(),
                     question.getContent(),
                     question.getCreateTime().toString()
+            );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 根据用户的id删除questions表中所有的回复
+     * @param userId
+     */
+    @Override
+    public void deleteReplys(int userId) {
+        QueryRunner runner = new QueryRunner(DruidUtils.getDataSource());
+        try {
+            runner.update(
+                    "delete from questions where userId=?",
+                    userId
             );
         } catch (SQLException e) {
             e.printStackTrace();

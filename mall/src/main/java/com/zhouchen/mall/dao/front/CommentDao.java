@@ -8,4 +8,6 @@ public interface CommentDao {
     List<Comment> getGoodComments(int goodId);
 
     void sendComment(Comment comment);
+
+    void deleteComments(int userId);
 }

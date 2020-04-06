@@ -35,6 +35,7 @@ public class AdminServiceImpl implements AdminService {
             return 2;
         }
         admin.setNickname(resAdmin.getNickname());
+        admin.setLevel(resAdmin.getLevel());
         return 0;
     }
 
@@ -98,7 +99,6 @@ public class AdminServiceImpl implements AdminService {
      * @param adminPwd
      * @return
      * 若原密码错误，返回1
-     * 若原密码正确，两次新密码不一致，返回2
      * 若正常修改返回0
      */
     @Override
@@ -106,9 +106,6 @@ public class AdminServiceImpl implements AdminService {
         Admin resAdmin = adminDao.getAdminByNick(adminPwd.getAdminToken());
         if (!resAdmin.getPwd().equals(adminPwd.getOldPwd())) {
             return 1;
-        }
-        if (!adminPwd.getNewPwd().equals(adminPwd.getConfirmPwd())) {
-            return 2;
         }
         resAdmin.setPwd(adminPwd.getNewPwd());
         adminDao.updateAdmin(resAdmin);

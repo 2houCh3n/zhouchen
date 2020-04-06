@@ -90,8 +90,14 @@ public class UserServlet extends HttpServlet {
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         //在数据库中删除该用户
-        userService.deleteUser(id);
-        HttpUtils.responseWriterTrue(null, response);
+        int result = userService.deleteUser(id);
+        if (result == 1) {
+            String message = "该用户当前还有未完成订单，请待完成订单后，再删除";
+            HttpUtils.responseWriterFalse(message, response);
+        }
+        if (result == 0) {
+            HttpUtils.responseWriterTrue(null, response);
+        }
     }
 
     /**

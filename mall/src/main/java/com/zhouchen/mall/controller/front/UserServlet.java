@@ -161,6 +161,11 @@ public class UserServlet extends HttpServlet {
             HttpUtils.responseWriterFalse(message, response);
         }
         if (result == 0) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            Cookie cookie = new Cookie("JSESSIONID", session.getId());
+            //cookie.setMaxAge(0);
+            response.addCookie(cookie);
             Map<String, Object> map = new HashMap<>();
             map.put("token", user.getNickname());
             map.put("name", user.getNickname());

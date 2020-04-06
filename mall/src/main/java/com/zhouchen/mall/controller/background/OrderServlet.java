@@ -149,8 +149,14 @@ public class OrderServlet extends HttpServlet {
      */
     private void deleteOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int orderId = Integer.parseInt(request.getParameter("id"));
-        orderService.deleteOrder(orderId);
-        HttpUtils.responseWriterTrue(null, response);
+        int result = orderService.deleteOrder(orderId);
+        if (result == 1) {
+            String message = "该订单未完成，待订单完成后再删除！";
+            HttpUtils.responseWriterFalse(message, response);
+        }
+        if (result == 0) {
+            HttpUtils.responseWriterTrue(null, response);
+        }
     }
 
     /**

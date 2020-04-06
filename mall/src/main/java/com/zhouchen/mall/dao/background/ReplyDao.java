@@ -14,4 +14,6 @@ public interface ReplyDao {
     List<Question> getGoodMsgs(int goodId);
 
     void askGoodMsg(Question question);
+
+    void deleteReplys(int userId);
 }

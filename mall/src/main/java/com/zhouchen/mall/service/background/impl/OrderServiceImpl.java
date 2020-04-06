@@ -55,9 +55,22 @@ public class OrderServiceImpl implements OrderService {
         return map;
     }
 
+    /**
+     * 删除指定订单
+     * 首先判断该订单是否完成，如果该订单已经完成或者已经退货，那么就成功删除，返回0
+     *                           否则，直接返回1
+     * @param orderId
+     * @return
+     */
     @Override
-    public void deleteOrder(int orderId) {
+    public int deleteOrder(int orderId) {
+        Order order = orderDao.getOrderInfo(orderId);
+        if (order.getStateId() != 3 && order.getDeleteFlag() == 0) {
+            //表明该订单状态未完成，且为退货
+            return 1;
+        }
         orderDao.deleteOrder(orderId);
+        return 0;
     }
 
     /**
@@ -116,9 +129,15 @@ public class OrderServiceImpl implements OrderService {
         } else {
             //订单状态是未付款
             resOrder.setGoodNum(order.getGoodNum());
-            Spec spec = goodDao.getSpec(order.getSpecId());
-            resOrder.setSpec(spec.getSpecName());
-            resOrder.setAmount(Double.parseDouble(spec.getUnitPrice()) * order.getGoodNum());
+            Spec oldSpec = goodDao.getSpec(resOrder.getSpec(), resOrder.getGoodId());
+            Spec newSpec = goodDao.getSpec(order.getSpecId());
+            //更新新旧spec的库存
+            oldSpec.setStockNum(String.valueOf(Integer.parseInt(oldSpec.getStockNum()) + resOrder.getGoodNum()));
+            newSpec.setStockNum(String.valueOf(Integer.parseInt(newSpec.getStockNum()) - order.getGoodNum()));
+            goodDao.updateSpec(oldSpec);
+            goodDao.updateSpec(newSpec);
+            resOrder.setSpec(newSpec.getSpecName());
+            resOrder.setAmount(Double.parseDouble(newSpec.getUnitPrice()) * order.getGoodNum());
             resOrder.setStateId(order.getStateId());
             orderDao.changeOrder(resOrder);
         }

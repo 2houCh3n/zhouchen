@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserService {
     List<User> allUser();
 
-    void deleteUser(int id);
+    int deleteUser(int id);
 
     List<User> searchUser(String word);
 
